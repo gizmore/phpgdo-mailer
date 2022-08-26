@@ -1,2 +1,2 @@
-# phpgdo-mailer
-Provides Module_Mailer to GDOv7 via an own simple mail() implementation. Not recommended.
+# phpgdo-mailer-gdo
+An own very simple mailer engine for GDOv7, based on the PHP mail() function.
