@@ -35,7 +35,7 @@ final class Mailer
 			self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' . $mail->getUTF8Reply() .
 			self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 		$encrypted = self::encrypt($message);
-		return @mail($to, $subject, $encrypted, $headers);
+		return mail($to, $subject, $encrypted, $headers);
 	}
 	
 	private static function encrypt($message)
