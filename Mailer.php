@@ -7,13 +7,14 @@ use GDO\Mail\Mail;
  * Own GDOv7 mailer using mail().
  * Symphony mailer shall be availble soon.
  *
- * @author gizmore
  * @version 7.0.1
  * @since 7.0.1
+ * @author gizmore
  */
 final class Mailer
 {
-	const HEADER_NEWLINE = "\n";
+
+	public const HEADER_NEWLINE = "\n";
 
 	public static function send(Mail $mail)
 	{
@@ -30,17 +31,12 @@ final class Mailer
 		$subject = $mail->getUTF8Subject();
 		$message = $html ? $mail->nestedHTMLBody() : $mail->nestedTextBody();
 		$contentType = $html ? 'text/html' : 'text/plain';
-		$headers .= "Content-Type: $contentType; charset=utf-8" . self::HEADER_NEWLINE . "MIME-Version: 1.0" .
-			self::HEADER_NEWLINE . "Content-Transfer-Encoding: 8bit" . self::HEADER_NEWLINE . "X-Mailer: PHP" .
+		$headers .= "Content-Type: $contentType; charset=utf-8" . self::HEADER_NEWLINE . 'MIME-Version: 1.0' .
+			self::HEADER_NEWLINE . 'Content-Transfer-Encoding: 8bit' . self::HEADER_NEWLINE . 'X-Mailer: PHP' .
 			self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' . $mail->getUTF8Reply() .
 			self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 		$encrypted = self::encrypt($message);
 		return mail($to, $subject, $encrypted, $headers);
-	}
-	
-	private static function encrypt($message)
-	{
-		return $message;
 	}
 
 	private static function sendWithAttachments(Mail $mail)
@@ -54,8 +50,8 @@ final class Mailer
 		$bound_mix = "GDOv7-MIX-{$random_hash}";
 		$bound_alt = "GDOv7-ALT-{$random_hash}";
 		$headers = "Content-Type: multipart/mixed; boundary=\"{$bound_mix}\"" . self::HEADER_NEWLINE .
-			"MIME-Version: 1.0" . self::HEADER_NEWLINE . "Content-Transfer-Encoding: 8bit" . self::HEADER_NEWLINE .
-			"X-Mailer: PHP" . self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' .
+			'MIME-Version: 1.0' . self::HEADER_NEWLINE . 'Content-Transfer-Encoding: 8bit' . self::HEADER_NEWLINE .
+			'X-Mailer: PHP' . self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' .
 			$mail->getUTF8Reply() . self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 
 		$message = "--$bound_mix\n";
@@ -83,8 +79,8 @@ final class Mailer
 
 		foreach ($mail->getAttachments() as $filename => $attachdata)
 		{
-			list ($attach, $mime, $encrypted) = $attachdata;
-			$filename = preg_replace("/[^a-z0-9_\-\.]/i", '', $filename);
+			[$attach, $mime, $encrypted] = $attachdata;
+			$filename = preg_replace('/[^a-z0-9_\-\.]/i', '', $filename);
 			$message .= "--$bound_mix\n";
 			$message .= "Content-Type: $mime; name=\"$filename\"\n";
 			$message .= "Content-Transfer-Encoding: base64\nContent-Disposition: attachment\n\n";
@@ -100,6 +96,11 @@ final class Mailer
 
 		$message .= "--$bound_mix--\n\n";
 		return @mail($to, $subject, $message, $headers);
+	}
+
+	private static function encrypt($message)
+	{
+		return $message;
 	}
 
 }
