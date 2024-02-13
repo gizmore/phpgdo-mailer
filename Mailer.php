@@ -34,6 +34,7 @@ final class Mailer
 		$headers .= "Content-Type: $contentType; charset=utf-8" . self::HEADER_NEWLINE . 'MIME-Version: 1.0' .
 			self::HEADER_NEWLINE . 'Content-Transfer-Encoding: 8bit' . self::HEADER_NEWLINE . 'X-Mailer: PHP' .
 			self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' . $mail->getUTF8Reply() .
+            self::HEADER_NEWLINE . 'Message-ID: ' . $mail->getMessageId() .
 			self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 		$encrypted = self::encrypt($message);
 		return mail($to, $subject, $encrypted, $headers);
@@ -51,6 +52,7 @@ final class Mailer
 		$bound_alt = "GDOv7-ALT-{$random_hash}";
 		$headers = "Content-Type: multipart/mixed; boundary=\"{$bound_mix}\"" . self::HEADER_NEWLINE .
 			'MIME-Version: 1.0' . self::HEADER_NEWLINE . 'Content-Transfer-Encoding: 8bit' . self::HEADER_NEWLINE .
+            'Message-ID: ' . $mail->getMessageId() . self::HEADER_NEWLINE .
 			'X-Mailer: PHP' . self::HEADER_NEWLINE . 'From: ' . $from . self::HEADER_NEWLINE . 'Reply-To: ' .
 			$mail->getUTF8Reply() . self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 
