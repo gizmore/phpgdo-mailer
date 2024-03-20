@@ -2,6 +2,7 @@
 namespace GDO\Mailer;
 
 use GDO\Mail\Mail;
+use GDO\Mail\Module_Mail;
 
 /**
  * Own GDOv7 mailer using mail().
@@ -37,8 +38,8 @@ final class Mailer
             self::HEADER_NEWLINE . 'Message-ID: ' . $mail->getMessageId() .
 			self::HEADER_NEWLINE . 'Return-Path: ' . $mail->getUTF8Return();
 		$encrypted = self::encrypt($message);
-		return mail($to, $subject, $encrypted, $headers);
-	}
+        return mail($to, $subject, $encrypted, $headers);
+    }
 
 	private static function sendWithAttachments(Mail $mail)
 	{
